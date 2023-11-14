@@ -25,8 +25,8 @@ spec:
         ports:
         - containerPort: 8000
         env:
-        - name: MONGO_HOST
-          value: "192.168.56.101"   
+        - name: MONGO_HOST   
+          value: "20.197.48.52"
         - name: POD_NAME
           valueFrom:
             fieldRef:
@@ -38,21 +38,6 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "800m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: fastapi-service-np
-  namespace: fapi
-spec:
-  selector:
-    app: fastapi-app
-  type: NodePort
-  ports:
-  - protocol: TCP
-    port: 80 
-    targetPort: 8000 
-    nodePort: 30003
 ---
 apiVersion: v1
 kind: Service
