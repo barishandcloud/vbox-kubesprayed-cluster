@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: goapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-deployment
+  namespace: goapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-app
+  template:
+    metadata:
+      labels:
+        app: go-app
+    spec:
+      containers:
+      - name: go-container
+        image: cmtoday/golangtest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+        env:
+        - name: MONGO_HOST
+          value: "192.168.56.101"     
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name             
+        # resources:
+        #   requests:
+        #     memory: "800Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1Gi"
+        #     cpu: "800m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-service-np
+  namespace: goapp
+spec:
+  selector:
+    app: go-app
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 90 
+    targetPort: 9000 
+    nodePort: 30004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-service-lb
+  namespace: goapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: go-app  
+  ports:
+    - protocol: TCP
+      port: 90
+      targetPort: 9000
+
