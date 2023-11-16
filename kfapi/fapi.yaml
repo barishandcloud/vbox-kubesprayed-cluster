@@ -26,33 +26,19 @@ spec:
         - containerPort: 8000
         env:
         - name: MONGO_HOST
-          value: "192.168.56.101"   
+          #value: "mongodb://mongo-0.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-1.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-2.mongodb.demo-mongodb.svc.cluster.local:27017?replicaSet=rs0"
+          value: "mongodb://192.168.56.101:27017/"
         - name: POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name             
-        resources:
-          requests:
-            memory: "800Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "800m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: fastapi-service-np
-  namespace: fapi
-spec:
-  selector:
-    app: fastapi-app
-  type: NodePort
-  ports:
-  - protocol: TCP
-    port: 80 
-    targetPort: 8000 
-    nodePort: 30003
+        # resources:
+        #   requests:
+        #     memory: "800Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1Gi"
+        #     cpu: "800m"
 ---
 apiVersion: v1
 kind: Service
