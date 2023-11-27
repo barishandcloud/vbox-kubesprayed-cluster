@@ -5,9 +5,9 @@ class MyUser(HttpUser):
     #host = "http://192.168.56.109:30003"
     #host = "http://192.168.56.241:90"
     host = "http://192.168.56.201"
-    #host = "http://20.235.45.97"
+    #host = "http://20.219.77.148"
 
-    urls_to_test = [f"/update_employee/i1_local_{empid}" for empid in range(1, 50000)]
+    urls_to_test = [f"/update_employee/aks1_{empid}" for empid in range(1, 50000)]
     random.shuffle(urls_to_test)
 
     @task

@@ -26,8 +26,8 @@ spec:
         - containerPort: 8000
         env:
         - name: MONGO_HOST
-          #value: "mongodb://mongo-0.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-1.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-2.mongodb.demo-mongodb.svc.cluster.local:27017?replicaSet=rs0"
-          value: "mongodb://192.168.56.101:27017/"
+          value: "mongodb://mongo-0.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-1.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-2.mongodb.demo-mongodb.svc.cluster.local:27017?replicaSet=rs0"
+          #value: "mongodb://192.168.56.101:27017/"
         - name: POD_NAME
           valueFrom:
             fieldRef:
