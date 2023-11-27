@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fapi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-deployment
+  namespace: fapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-container
+        image: cmtoday/my-fastapi-app
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGO_HOST
+          value: "mongodb://mongo-0.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-1.mongodb.demo-mongodb.svc.cluster.local:27017,mongo-2.mongodb.demo-mongodb.svc.cluster.local:27017?replicaSet=rs0"          
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name             
+        # resources:
+        #   requests:
+        #     memory: "800Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1Gi"
+        #     cpu: "800m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service-lb
+  namespace: fapi
+spec:
+  type: LoadBalancer
+  selector:
+    app: fastapi-app  
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000    
