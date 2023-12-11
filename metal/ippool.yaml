@@ -1,5 +1,8 @@
 #https://stackoverflow.com/questions/75637481/k3s-metallb-metallb-controller-failed-to-allocate-ip-for-default-nginx-no
 
+#kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e "s/strictARP: false/strictARP: true/" | kubectl apply -f - -n kube-system
+#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
+
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
